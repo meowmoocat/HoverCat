@@ -52,14 +52,16 @@ public class Model {
 		else size=height;
 
 		//setup game world
-		//Player 
-		HoverCat= new GameObject("res/Lightning.png",50,50,new Point3f(500,500,0));
+		//Player
+		System.out.println("hoverCat:");
+		HoverCat = new GameObject("res/hovercatA.png",150,50,new Point3f(500,500,0), 'r');
+		System.out.println("texture? "+HoverCat.getTexture());
 		//Enemies starting with four
 		Timer=10;
-		Dogs.add(new GameObject("res/Lightning.png",50,50,new Point3f(size, size-5,0)));
-		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(size,(float)Math.random()*40+400,0)));
-		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
-		RatKing = new GameObject("res/Ninja.png", 100, 400, new Point3f(size, size/2,0));
+		Dogs.add(new GameObject("res/Lightning.png", 50, 50, new Point3f(size, size-5,0), 'l'));
+//		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(size,(float)Math.random()*40+400,0), 'l'));
+		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0), 'l'));
+		RatKing = new GameObject("res/Ninja.png", 100, 400, new Point3f(size, size/2,0), 'l');
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
@@ -189,7 +191,7 @@ public class Model {
 			while (EnemiesList.size()<6)
 			{
 				EnemiesList.add(new GameObject("res/UFO.png",50,50,
-						new Point3f(size,(float)Math.random()*size,0)));
+						new Point3f(size,(float)Math.random()*size,0), 'l'));
 			}
 		}
 	}
@@ -243,7 +245,7 @@ public class Model {
 
 	private void CreateBullet() {
 		BulletList.add(new GameObject("res/Bullet.png",32,64,
-				new Point3f(HoverCat.getCentre().getX(),HoverCat.getCentre().getY(),0.0f)));
+				new Point3f(HoverCat.getCentre().getX(),HoverCat.getCentre().getY(),0.0f),'r'));
 
 	}
 

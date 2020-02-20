@@ -37,12 +37,14 @@ public class GameObject {
 		
 	}
 	
-    public GameObject(String textureLocation, int width, int height, Point3f centre) {
+    public GameObject(String textureLocation, int width, int height, Point3f centre, char direction) {
     	 hasTextured=true;
     	 this.textureLocation=textureLocation;
+	     System.out.println("texture: "+textureLocation);
     	 this.width=width;
 		 this.height=height;
 		 this.centre =centre;
+		 this.Direction = direction;
 	}
 
 	public Point3f getCentre() {
