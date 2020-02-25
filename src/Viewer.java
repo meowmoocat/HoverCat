@@ -1,20 +1,11 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LayoutManager;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-
-import util.GameObject;
 
 
 /*
@@ -80,8 +71,8 @@ public class Viewer extends JPanel {
 		CurrentAnimationTime++; // runs animation time step 
 
 		//Draw player Game Object 
-		int x = (int) gameworld.getPlayer().getCentre().getX();
-		int y = (int) gameworld.getPlayer().getCentre().getY();
+		int x = (int) gameworld.getPlayer().getDrawfrom().getX();
+		int y = (int) gameworld.getPlayer().getDrawfrom().getY();
 		int width = (int) gameworld.getPlayer().getWidth();
 		int height = (int) gameworld.getPlayer().getHeight();
 		String texture = gameworld.getPlayer().getTexture();
@@ -96,14 +87,14 @@ public class Viewer extends JPanel {
 		// change back 
 		gameworld.getBullets().forEach((temp) -> 
 		{ 
-			drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+			drawBullet((int) temp.getDrawfrom().getX(), (int) temp.getDrawfrom().getY(), (int) temp.getWidth(),
 					(int) temp.getHeight(), temp.getTexture(),g);
 		}); 
 		
 		//Draw Enemies   
 		gameworld.getEnemies().forEach((temp) -> 
 		{
-			drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+			drawEnemies((int) temp.getDrawfrom().getX(), (int) temp.getDrawfrom().getY(), (int) temp.getWidth(),
 					(int) temp.getHeight(), temp.getTexture(),g);
 		 
 	    }); 

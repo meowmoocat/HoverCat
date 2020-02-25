@@ -149,7 +149,7 @@ void
     </coordinates>
     <panel_attributes>util::GameObject
 --
--centre = new Point3f(0, 0, 0): Point3f
+-drawfrom = new Point3f(0, 0, 0): Point3f
 -width = 10: int
 -height = 10: int
 -hasTextured = false: boolean
@@ -157,9 +157,9 @@ void
 -blanktexture = "res/blankSprite.png": String
 --
 +GameObject(): ctor
-+GameObject(String textureLocation, int width, int height, Point3f centre): ctor
++GameObject(String textureLocation, int width, int height, Point3f drawfrom): ctor
 +getCentre(): Point3f
-+setCentre(Point3f centre): void
++setCentre(Point3f drawfrom): void
 +getWidth(): int
 +getHeight(): int
 +getTexture(): String

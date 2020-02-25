@@ -45,9 +45,9 @@ SOFTWARE.
 
 public class MainWindow {
 	private static JFrame frame = new JFrame("Hover Cat adventures");   // Change to the name of your game
-	private static Model gameworld= new Model();
+	private static Model gameworld = new Model();
 	private static Viewer canvas = new Viewer(gameworld);
-	private KeyListener Controller =new Controller();
+	private KeyListener Controller = new Controller();
 	private static int TargetFPS = 100;
 	private static boolean startGame = false;
 	private JLabel BackgroundImageForStartMenu;
@@ -89,7 +89,7 @@ public class MainWindow {
 
 			BufferedImage myPicture = ImageIO.read(BackroundToLoad);
 			BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
-			BackgroundImageForStartMenu.setBounds(0, 0, width, height);
+			BackgroundImageForStartMenu.setBounds(0, 0, width-20, height-20);
 			frame.add(BackgroundImageForStartMenu);
 		}  catch (IOException e) {
 			e.printStackTrace();
