@@ -27,11 +27,11 @@ SOFTWARE.
 public class Vector3f {
 
 	private float x=0;
-	private  float y=0;
-	private  float z=0;
+	private float y=0;
+	private float z=0;
 	
 	public Vector3f() 
-	{  
+	{
 		setX(0.0f);
 		setY(0.0f);
 		setZ(0.0f);
@@ -64,7 +64,7 @@ public class Vector3f {
 	//Do not implement Vector minus a Point as it is undefined 
 	
 	//Implement a Vector * Scalar  and comment what the method does    ( we wont create Scalar * Vector due to expediency ) 
-	public Vector3f byScalar(float scale )
+	public Vector3f byScalar(float scale)
 	{
 		return new Vector3f(this.getX()*scale, this.getY()*scale, this.getZ()*scale);
 	}

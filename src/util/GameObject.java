@@ -25,38 +25,44 @@ SOFTWARE.
  */ 
 public class GameObject {
 	
-	private Point3f centre= new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled  
+	private Point3f drawfrom = new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled
 	private int width=10;
 	private int height=10;
 	private boolean hasTextured=false;
 	private String textureLocation; 
 	private String blanktexture="res/blankSprite.png";
 	private char Direction = 'l';
+	private Area attackArea;
+	private Area weakArea;
 	
 	public GameObject() {  
 		
 	}
 	
-    public GameObject(String textureLocation, int width, int height, Point3f centre, char direction) {
+    public GameObject(String textureLocation, int width, int height, Point3f drawfrom, char direction, Area attack, Area weak) {
     	 hasTextured=true;
     	 this.textureLocation=textureLocation;
-	     System.out.println("texture: "+textureLocation);
     	 this.width=width;
 		 this.height=height;
-		 this.centre =centre;
+		 this.drawfrom =drawfrom;
 		 this.Direction = direction;
+		 this.attackArea = attack;
+		 this.weakArea = weak;
 	}
 
-	public Point3f getCentre() {
-		return centre;
+	public Point3f getDrawfrom() {
+		return drawfrom;
 	}
 
-	public void setCentre(Point3f centre) {
-		this.centre = centre;
+	public void setDrawfrom(Point3f drawfrom) {
+		this.drawfrom = drawfrom;
 		
 		//make sure to put boundaries on the gameObject
-
-	 
+	}
+	public void setAreasMiddle(Point3f middle) {
+		this.attackArea.setMiddle(middle.plusPoint(this.attackArea.getMiddle()));
+		this.weakArea.setMiddle(middle.plusPoint(this.weakArea.getMiddle()));
+		System.out.println(this.attackArea.getMiddle().getX() +" : "+ this.attackArea.getMiddle().getY());
 	}
 
 	public int getWidth() {
@@ -82,7 +88,30 @@ public class GameObject {
 	public void setDirection(char direction){
 		Direction = direction;
 	}
-  
+
+	public Boolean Intercepts(GameObject player) {
+
+//		Point3f aTopLeft = this.drawfrom.plusPoint(this.attackArea.getTopLeft());
+//		if( )
+//		if(this.getDirection() == 'l') {
+//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < player.getWidth()
+//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < player.getHeight())
+//				System.out.println("hovercat loses life 1");
+//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < this.getHeight()
+//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < this.getWidth())
+//				System.out.println("Doggo dies 1");
+//		}
+//		else if(this.getDirection() == 'r') {
+//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < this.getHeight()
+//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < this.getWidth())
+//				System.out.println("hovercat loses life 2");
+//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < player.getHeight()
+//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < player.getWidth()) {
+//				System.out.println("Doggo dies 2");
+//			}
+//		}
+		return true;
+	}
 }
 
 /*
