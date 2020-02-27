@@ -24,45 +24,37 @@ SOFTWARE.
    (MIT LICENSE ) e.g do what you want with this :-) 
  */ 
 public class GameObject {
-	
-	private Point3f drawfrom = new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled
-	private int width=10;
-	private int height=10;
-	private boolean hasTextured=false;
+
+	private Point3f centre;
+//	private Point3f centre = new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled
+	private int width;
+	private int height;
+	private boolean hasTextured;
 	private String textureLocation; 
-	private String blanktexture="res/blankSprite.png";
+	private String blanktexture;
 	private char Direction = 'l';
-	private Area attackArea;
-	private Area weakArea;
 	
 	public GameObject() {  
 		
 	}
 	
-    public GameObject(String textureLocation, int width, int height, Point3f drawfrom, char direction, Area attack, Area weak) {
+    public GameObject(String textureLocation, int width, int height, Point3f centre, char direction) {
     	 hasTextured=true;
     	 this.textureLocation=textureLocation;
     	 this.width=width;
 		 this.height=height;
-		 this.drawfrom =drawfrom;
+		 this.centre =centre;
 		 this.Direction = direction;
-		 this.attackArea = attack;
-		 this.weakArea = weak;
 	}
 
-	public Point3f getDrawfrom() {
-		return drawfrom;
+	public Point3f getCentre() {
+		return centre;
 	}
 
-	public void setDrawfrom(Point3f drawfrom) {
-		this.drawfrom = drawfrom;
+	public void setCentre(Point3f centre) {
+		this.centre = centre;
 		
 		//make sure to put boundaries on the gameObject
-	}
-	public void setAreasMiddle(Point3f middle) {
-		this.attackArea.setMiddle(middle.plusPoint(this.attackArea.getMiddle()));
-		this.weakArea.setMiddle(middle.plusPoint(this.weakArea.getMiddle()));
-		System.out.println(this.attackArea.getMiddle().getX() +" : "+ this.attackArea.getMiddle().getY());
 	}
 
 	public int getWidth() {
@@ -74,43 +66,21 @@ public class GameObject {
 	}
 
 	public String getTexture() {
-		if(hasTextured) 
-			{
+		if(hasTextured)
+		{
 			return textureLocation;
-			}
-		 
+		}
 		return blanktexture; 
+	}
+	public void setTexture(String texture) {
+		textureLocation = texture;
 	}
 
 	public char getDirection(){
 		return Direction;
 	}
-	public void setDirection(char direction){
+	public void changeDirection(char direction){
 		Direction = direction;
-	}
-
-	public Boolean Intercepts(GameObject player) {
-
-//		Point3f aTopLeft = this.drawfrom.plusPoint(this.attackArea.getTopLeft());
-//		if( )
-//		if(this.getDirection() == 'l') {
-//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < player.getWidth()
-//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < player.getHeight())
-//				System.out.println("hovercat loses life 1");
-//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < this.getHeight()
-//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < this.getWidth())
-//				System.out.println("Doggo dies 1");
-//		}
-//		else if(this.getDirection() == 'r') {
-//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < this.getHeight()
-//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < this.getWidth())
-//				System.out.println("hovercat loses life 2");
-//			if (Math.abs(this.getDrawfrom().getX() - player.getDrawfrom().getX()) < player.getHeight()
-//					&& Math.abs(this.getDrawfrom().getY() - player.getDrawfrom().getY()) < player.getWidth()) {
-//				System.out.println("Doggo dies 2");
-//			}
-//		}
-		return true;
 	}
 }
 

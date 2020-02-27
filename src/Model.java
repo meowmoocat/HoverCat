@@ -1,10 +1,8 @@
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import util.Area;
-import util.GameObject;
-import util.Point3f;
-import util.Vector3f;
+import util.*;
+
 /*
  * Created by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
@@ -31,19 +29,20 @@ SOFTWARE.
  */
 public class Model {
 
-	private GameObject HoverCat;
+	private Hovercat HoverCat;
 	private Controller controller = Controller.getInstance();
 	private CopyOnWriteArrayList<GameObject> EnemiesList = new CopyOnWriteArrayList<GameObject>();
 	private CopyOnWriteArrayList<GameObject> BulletList = new CopyOnWriteArrayList<GameObject>();
-	private CopyOnWriteArrayList<GameObject> Birds = new CopyOnWriteArrayList<GameObject>();
-	private CopyOnWriteArrayList<GameObject> Dogs = new CopyOnWriteArrayList<GameObject>();
-	private CopyOnWriteArrayList<GameObject> IntruderCats = new CopyOnWriteArrayList<GameObject>();
-	private CopyOnWriteArrayList<GameObject> Eagles = new CopyOnWriteArrayList<GameObject>();
+	private CopyOnWriteArrayList<Doggo> Dogs = new CopyOnWriteArrayList<>();
+	private CopyOnWriteArrayList<Intrudercat> IntruderCats = new CopyOnWriteArrayList<>();
+	private CopyOnWriteArrayList<Eagle> Eagles = new CopyOnWriteArrayList<>();
 	private GameObject RatKing = new GameObject();
 	private CopyOnWriteArrayList<GameObject> Rats = new CopyOnWriteArrayList<GameObject>();
-	private int Timer;
+
 	private int Score=0;
 	private int size;
+	private Boolean GameOver = false;
+	private Boolean GameFinished = false;
 
 	public Model() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -54,18 +53,13 @@ public class Model {
 
 		//setup game world
 		//Player
-		HoverCat = new GameObject("res/hovercatA.png",150,50,new Point3f(100,400,0), 'r',
-				new Area(new Point3f(150,430,0), new Point3f(100,40,0)),
-				new Area(new Point3f(175,425,0), new Point3f(150,50,0)));
+		HoverCat = new Hovercat("res/hovercatA.png",150,50,new Point3f(400,400,0), 'r');
 		//Enemies starting with four
-		Timer=10;
-		Dogs.add(new GameObject("res/Lightning.png", 50, 50, new Point3f(size-50, size-5,0), 'l',
-				new Area(new Point3f(50,30,0), new Point3f(100,40,0)),
-				new Area(new Point3f(75,25,0), new Point3f(150,50,0))));
+
+//		Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
 //		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(size,(float)Math.random()*40+400,0), 'l'));
-		IntruderCats.add(new GameObject("res/hovercatB.png",150,50,new Point3f(200,500,0), 'r',
-				new Area(new Point3f(50,30,0), new Point3f(100,40,0)),
-				new Area(new Point3f(75,25,0), new Point3f(150,50,0))));
+//		IntruderCats.add(new Intrudercat("res/intrudercatB.png",150,50,new Point3f(size-5,(int)Math.random()*size-5,0), 'l'));
+		Eagles.add(new Eagle("res/eagle.png", 210,180, new Point3f(0,(int)Math.random()*(size/2), 0),'r'));
 //		RatKing = new GameObject("res/Ninja.png", 100, 400, new Point3f(size, size/2,0), 'l');
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
@@ -76,6 +70,22 @@ public class Model {
 
 	}
 
+	public Boolean getGameFinished() {
+		return GameFinished;
+	}
+
+	public Boolean getGameOver() {
+		return GameOver;
+	}
+
+	public void checkGameOver() {
+//		System.out.println("lives left: "+ HoverCat.getLives());
+		if(HoverCat.getLives() < 1) {
+//			System.out.println("game over: "+ GameOver);
+			GameOver = true;
+		}
+	}
+
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
 	public void gamelogic()
 	{
@@ -83,12 +93,11 @@ public class Model {
 		playerLogic();
 		// Enemy Logic next
 		enemyLogic();
-		//powerup bird logic
-		birdLogic();
+
 		//Attack dogs
 		dogLogic();
-
 		intruderCatLogic();
+		eagleLogic();
 		// Bullets move next 
 		attackLogic();
 		// interactions between objects 
@@ -106,8 +115,8 @@ public class Model {
 		{
 			for (GameObject Bullet : BulletList)
 			{
-				if ( Math.abs(temp.getDrawfrom().getX()- Bullet.getDrawfrom().getX())< temp.getWidth()
-						&& Math.abs(temp.getDrawfrom().getY()- Bullet.getDrawfrom().getY()) < temp.getHeight())
+				if ( Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth()
+						&& Math.abs(temp.getCentre().getY()- Bullet.getCentre().getY()) < temp.getHeight())
 				{
 					EnemiesList.remove(temp);
 					BulletList.remove(Bullet);
@@ -118,60 +127,71 @@ public class Model {
 
 	}
 
-	private void birdLogic(){
-		//needs a timer! or a when lives are low
-		for(GameObject temp:Birds) {
+	private void eagleLogic(){
+		Vector3f dir = new Vector3f();
 
+		if(!Eagles.isEmpty()) {
+
+
+		}
+		for(Eagle temp:Eagles) {
+			System.out.println("f");
+			dir = HoverCat.getCentre().MinusPoint(Eagles.get(0).getCentre()).Normal();
+			temp.getCentre().setBoundary(size);
+			temp.getCentre().ApplyVector(new Vector3f(dir.getX(), -dir.getY(), 0));
 		}
 	}
 
 	private void dogLogic() {
-		for(GameObject temp:Dogs){
-			temp.getDrawfrom().setBoundary(size);
+		for(Doggo temp:Dogs){
+			temp.getCentre().setBoundary(size);
 
 			//which direction to move
 			if(temp.getDirection()=='l') {
-//				if (HoverCat.getDrawfrom().getX() == temp.getDrawfrom().getX() - 15)
-//					System.out.println("fuck");
-				temp.getDrawfrom().ApplyVector(new Vector3f(-1, 0, 0));
+				temp.getCentre().ApplyVector(new Vector3f(-1, 0, 0));
 			}
 			else {
-//				if (HoverCat.getDrawfrom().getX() == temp.getDrawfrom().getX() + 15)
-//					System.out.println("shit");
-				temp.getDrawfrom().ApplyVector(new Vector3f(1, 0, 0));
+				temp.getCentre().ApplyVector(new Vector3f(1, 0, 0));
 			}
 
 			//turns around at sides
-			if(temp.getDrawfrom().getX()<1)
-				temp.setDirection('r');
-			else if(temp.getDrawfrom().getX()>size-2)
-				temp.setDirection('l');
-
-			if(temp.Intercepts(getPlayer())) {
-//				System.out.println("intercepts");
+			if(temp.getCentre().getX()<1) {
+				temp.changeDirection('r');
+				temp.setTexture("res/dogb.png");
 			}
-//			if()  // current boundary need to pass value to model
-//			{
-//				EnemiesList.remove(temp);
-//
-//				// enemies win so score decreased
-//				Score--;
-//			}
+			else if(temp.getCentre().getX()>size-2) {
+				temp.changeDirection('l');
+				temp.setTexture("res/dog.png");
+			}
+
+			if(temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX()<1) || (temp.getCentre().getX()>size-2))) {
+				Dogs.remove(temp);
+			}
 		}
 	}
 
 	private void intruderCatLogic() {
-		for(GameObject temp: IntruderCats){
-			temp.getDrawfrom().setBoundary(size);
-			Vector3f dir = HoverCat.getDrawfrom().MinusPoint(temp.getDrawfrom()).Normal();
+		for(Intrudercat temp: IntruderCats){
+			temp.getCentre().setBoundary(size);
+			Vector3f dir = HoverCat.getCentre().MinusPoint(temp.getCentre()).Normal();
 
-			temp.getDrawfrom().ApplyVector(new Vector3f(dir.getX(),-dir.getY(),0));
+			temp.getCentre().ApplyVector(new Vector3f(dir.getX(),-dir.getY(),0));
+			if(dir.getX()<0 && temp.getDirection() != 'l') {
+				temp.changeDirection('l');
+			}
+			else if(dir.getX()>0 && temp.getDirection() != 'r'){
+				temp.changeDirection('r');
+			}
+
+			if(temp.intrudercatAttacked(getPlayer())) {
+				IntruderCats.remove(temp);
+			}
 		}
 	}
 
 	private void ratKingLogic() {
 		for(GameObject temp: IntruderCats){
-			temp.getDrawfrom().setBoundary(size);
+			temp.getCentre().setBoundary(size);
 		}
 	}
 
@@ -180,12 +200,12 @@ public class Model {
 		for (GameObject temp : EnemiesList)
 		{
 
-			temp.getDrawfrom().setBoundary(size);
+			temp.getCentre().setBoundary(size);
 			// Move enemies
-			temp.getDrawfrom().ApplyVector(new Vector3f(-1,0,0));
+			temp.getCentre().ApplyVector(new Vector3f(-1,0,0));
 
 			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getDrawfrom().getX()==2)  // current boundary need to pass value to model
+			if (temp.getCentre().getX()==2)  // current boundary need to pass value to model
 			{
 				EnemiesList.remove(temp);
 
@@ -211,12 +231,12 @@ public class Model {
 		for (GameObject temp : BulletList)
 		{
 			//check to move them
-			temp.getDrawfrom().setBoundary(size);
-			temp.getDrawfrom().ApplyVector(new Vector3f(+1,0,0));
+			temp.getCentre().setBoundary(size);
+			temp.getCentre().ApplyVector(new Vector3f(+1,0,0));
 			//see if they hit anything 
 
 			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getDrawfrom().getX()==size)
+			if (temp.getCentre().getX()==size)
 			{
 				BulletList.remove(temp);
 			}
@@ -225,29 +245,29 @@ public class Model {
 	}
 
 	private void playerLogic() {
-
+		checkGameOver();
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
 
 		//check for movement and if you fired a bullet 
-		HoverCat.getDrawfrom().setBoundary(size-2);
+		HoverCat.getCentre().setBoundary(size-2);
 		if(Controller.getInstance().isKeyAPressed()){
-			HoverCat.getDrawfrom().ApplyVector( new Vector3f(-2,0,0));
-			HoverCat.setAreasMiddle(new Point3f(-2,0,0));
+			HoverCat.getCentre().ApplyVector( new Vector3f(-3,0,0));
+			HoverCat.changeDirection('l');
+			HoverCat.setTexture("res/hovercatB.png");
 		}
 
 		if(Controller.getInstance().isKeyDPressed()) {
-			HoverCat.getDrawfrom().ApplyVector( new Vector3f(2,0,0));
-			HoverCat.setAreasMiddle(new Point3f(2,0,0));
+			HoverCat.getCentre().ApplyVector( new Vector3f(3,0,0));
+			HoverCat.changeDirection('r');
+			HoverCat.setTexture("res/hovercatA.png");
 		}
 
 		if(Controller.getInstance().isKeyWPressed()) {
-			HoverCat.getDrawfrom().ApplyVector( new Vector3f(0,2,0));
-			HoverCat.setAreasMiddle(new Point3f(0,2,0));
+			HoverCat.getCentre().ApplyVector( new Vector3f(0,3,0));
 		}
 
 		if(Controller.getInstance().isKeySPressed()){
-			HoverCat.getDrawfrom().ApplyVector( new Vector3f(0,-2,0));
-			HoverCat.setAreasMiddle(new Point3f(0,-2,0));
+			HoverCat.getCentre().ApplyVector( new Vector3f(0,-3,0));
 		}
 
 		if(Controller.getInstance().isKeySpacePressed()) {
@@ -259,19 +279,24 @@ public class Model {
 
 	private void CreateBullet() {
 //		BulletList.add(new GameObject("res/Bullet.png",32,64,
-//				new Point3f(HoverCat.getDrawfrom().getX(),HoverCat.getDrawfrom().getY(),0.0f),'r'));
+//				new Point3f(HoverCat.getCentre().getX(),HoverCat.getCentre().getY(),0.0f),'r'));
 
 	}
 
-	public GameObject getPlayer() {
+	public Hovercat getPlayer() {
 		return HoverCat;
 	}
 
-	public CopyOnWriteArrayList<GameObject> getEnemies() {
-		CopyOnWriteArrayList<GameObject> enemies;
-		enemies = Dogs;
-//		enemies += IntruderCats;
-		return enemies;
+	public CopyOnWriteArrayList<Doggo> getDoggos() {
+		return Dogs;
+	}
+
+	public CopyOnWriteArrayList<Intrudercat> getIntruderCats() {
+		return IntruderCats;
+	}
+
+	public CopyOnWriteArrayList<Eagle> getEagles() {
+		return Eagles;
 	}
 
 	public CopyOnWriteArrayList<GameObject> getBullets() {

@@ -85,7 +85,7 @@ public class Point3f {
 	
 	
 	/// implement Point - Point  and comment what the method does  
-	public Vector3f MinusPoint(Point3f Minus) { 
+	public Vector3f MinusPoint(Point3f Minus) {
 		return new Vector3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
 	}
 	public Point3f plusPoint(Point3f plus) {

@@ -1,6 +1,4 @@
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -70,11 +68,11 @@ public class Viewer extends JPanel {
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
 
-		//Draw player Game Object 
-		int x = (int) gameworld.getPlayer().getDrawfrom().getX();
-		int y = (int) gameworld.getPlayer().getDrawfrom().getY();
+		//Draw player Game Object
 		int width = (int) gameworld.getPlayer().getWidth();
 		int height = (int) gameworld.getPlayer().getHeight();
+		int x = (int) gameworld.getPlayer().getCentre().getX()-(width/2);
+		int y = (int) gameworld.getPlayer().getCentre().getY()-(height/2);
 		String texture = gameworld.getPlayer().getTexture();
 		
 		//Draw background 
@@ -87,19 +85,61 @@ public class Viewer extends JPanel {
 		// change back 
 		gameworld.getBullets().forEach((temp) -> 
 		{ 
-			drawBullet((int) temp.getDrawfrom().getX(), (int) temp.getDrawfrom().getY(), (int) temp.getWidth(),
+			drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
 					(int) temp.getHeight(), temp.getTexture(),g);
 		}); 
 		
 		//Draw Enemies   
-		gameworld.getEnemies().forEach((temp) -> 
+//		gameworld.getEnemies().forEach((temp) ->
+//		{
+//			drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+//					(int) temp.getHeight(), temp.getTexture(),g);
+//
+//	    });
+		gameworld.getDoggos().forEach((temp) ->
 		{
-			drawEnemies((int) temp.getDrawfrom().getX(), (int) temp.getDrawfrom().getY(), (int) temp.getWidth(),
-					(int) temp.getHeight(), temp.getTexture(),g);
-		 
-	    }); 
+			drawDoggo((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+					(int) temp.getHeight(), temp.getTexture(), g);
+		});
+		gameworld.getIntruderCats().forEach((temp) ->
+		{
+				drawPlayer((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+						(int) temp.getHeight(), temp.getTexture(), g);
+		});
+		gameworld.getEagles().forEach((temp) ->
+		{
+			drawEagle((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+					(int) temp.getHeight(), temp.getTexture(), g);
+		});
 	}
-	
+
+	private void drawEagle(int x, int y, int width, int height, String texture, Graphics g) {
+		File TextureToLoad = new File(texture);
+		int drawX = x - (width/2);
+		int drawY = y -(height/2);
+		try {
+			Image eagle = ImageIO.read(TextureToLoad);
+			int currentPositionInAnimation = ((int) (CurrentAnimationTime)*1050);
+			g.drawImage(eagle, drawX, drawY, drawX+width, drawY+height, currentPositionInAnimation, 0,
+					currentPositionInAnimation+1049, 449, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void drawDoggo(int x, int y, int width, int height, String texture, Graphics g) {
+		File TextureToLoad = new File(texture);
+		int drawX = x - (width/2);
+		int drawY = y -(height/2);
+		try {
+			Image doggo = ImageIO.read(TextureToLoad);
+			int currentPositionInAnimation = ((int) (CurrentAnimationTime%2)*700);
+			g.drawImage(doggo, drawX, drawY, drawX+width, drawY+height, currentPositionInAnimation, 0,
+					currentPositionInAnimation+699, 449, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	private void drawEnemies(int x, int y, int width, int height, String texture, Graphics g) {
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues
 		// depending your eclipse install or if your running this without an IDE
@@ -121,7 +161,7 @@ public class Viewer extends JPanel {
 
 	private void drawBackground(Graphics g)
 	{
-		File TextureToLoad = new File("res/spacebackground.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE 
+		File TextureToLoad = new File("res/background.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
 		try {
 			Image myImage = ImageIO.read(TextureToLoad); 
 			 g.drawImage(myImage, 0,0, 864, 864, 0 , 0, 864, 864, null);

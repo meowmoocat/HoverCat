@@ -51,8 +51,7 @@ public class MainWindow {
 	private static int TargetFPS = 100;
 	private static boolean startGame = false;
 	private JLabel BackgroundImageForStartMenu;
-//	protected static int width;
-//	protected static int height;
+
 
 	public MainWindow() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -101,7 +100,7 @@ public class MainWindow {
 
 	public static void main(String[] args) {
 		MainWindow hello = new MainWindow();  //sets up environment 
-		while(true)   //not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple 
+		while(!gameworld.getGameFinished() && !gameworld.getGameOver())   //not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple
 		{
 			//swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it 
 
@@ -111,9 +110,7 @@ public class MainWindow {
 			//wait till next time step 
 			while (FrameCheck > System.currentTimeMillis()){}
 
-
-			if(startGame)
-			{
+			if(startGame) {
 				gameloop();
 			}
 
