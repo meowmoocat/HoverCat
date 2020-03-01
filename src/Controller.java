@@ -31,11 +31,11 @@ SOFTWARE.
 //Singeton pattern
 public class Controller implements KeyListener {
         
-	   private static boolean KeyAPressed= false;
-	   private static boolean KeySPressed= false;
-	   private static boolean KeyDPressed= false;
-	   private static boolean KeyWPressed= false;
-	   private static boolean KeySpacePressed= false;
+	   private static boolean KeyAPressed = false;
+	   private static boolean KeySPressed = false;
+	   private static boolean KeyDPressed = false;
+	   private static boolean KeyWPressed = false;
+	   private static boolean KeySpacePressed = false;
 	   
 	   private static final Controller instance = new Controller();
 	   
@@ -61,6 +61,10 @@ public class Controller implements KeyListener {
 			case 's':setKeySPressed(true);break;
 			case 'w':setKeyWPressed(true);break;
 			case 'd':setKeyDPressed(true);break;
+			case 'A':setKeyAPressed(true);break;
+			case 'S':setKeySPressed(true);break;
+			case 'W':setKeyWPressed(true);break;
+			case 'D':setKeyDPressed(true);break;
 			case ' ':setKeySpacePressed(true);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
@@ -80,6 +84,10 @@ public class Controller implements KeyListener {
 			case 's':setKeySPressed(false);break;
 			case 'w':setKeyWPressed(false);break;
 			case 'd':setKeyDPressed(false);break;
+			case 'A':setKeyAPressed(false);break;
+			case 'S':setKeySPressed(false);break;
+			case 'W':setKeyWPressed(false);break;
+			case 'D':setKeyDPressed(false);break;
 			case ' ':setKeySpacePressed(false);break;   
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");

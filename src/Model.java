@@ -40,30 +40,30 @@ public class Model {
 	private GameObject RatKing = new GameObject();
 	private CopyOnWriteArrayList<GameObject> Rats = new CopyOnWriteArrayList<GameObject>();
 
-	private int Score=0;
+	private int Score = 0;
 	private int size;
 	private Boolean GameOver = false;
 	private Boolean GameFinished = false;
 	private Boolean EagleReachedPoint = false;
 	private Point3f HovercatPositionToAttack = null;
 	private Vector3f HovercatDirectionToAttack = null;
-	private int NumIntrudercats = 0;
-	private int NumDogs = 2;
-	private int NumEagles = 0;
+	private int NumIntrudercats = 5;
+	private int NumDogs = 5;
+	private int NumEagles = 5;
 
 	public Model() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) screenSize.getWidth()-100;
-		int height = (int) screenSize.getHeight()-100;
-		if(width<height) size=width;
-		else size=height;
+		int width = (int) screenSize.getWidth() - 100;
+		int height = (int) screenSize.getHeight() - 100;
+		if (width < height) size = width;
+		else size = height;
 
 		//setup game world
 		//Player
-		HoverCat = new Hovercat("res/hovercatA.png",150,50,new Point3f(400,400,0), 'r');
+		HoverCat = new Hovercat("res/hovercatA.png", 150, 50, new Point3f(400, 400, 0), 'r');
 		//Enemies starting with four
 
-		Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
+		Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(size - 50, size - 5, 0), 'l'));
 //		Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
 //		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(size,(float)Math.random()*40+400,0), 'l'));
 //		IntruderCats.add(new Intrudercat("res/intrudercatB.png",150,50,new Point3f(size-5,(int)Math.random()*size-5,0), 'l'));
@@ -90,7 +90,7 @@ public class Model {
 
 	public void checkGameOver() {
 //		System.out.println("lives left: "+ HoverCat.getLives());
-		if(HoverCat.getLives() < 1) {
+		if (HoverCat.getLives() < 1) {
 //			System.out.println("game over: "+ GameOver);
 			GameOver = true;
 		}
@@ -98,8 +98,7 @@ public class Model {
 
 
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly.
-	public void gamelogic()
-	{
+	public void gamelogic() {
 		// Player Logic first 
 		playerLogic();
 		// Enemy Logic next
@@ -123,13 +122,10 @@ public class Model {
 
 		//see if they hit anything 
 		// using enhanced for-loop style as it makes it alot easier both code wise and reading wise too 
-		for (GameObject temp : EnemiesList)
-		{
-			for (GameObject Bullet : BulletList)
-			{
-				if ( Math.abs(temp.getCentre().getX()- Bullet.getCentre().getX())< temp.getWidth()
-						&& Math.abs(temp.getCentre().getY()- Bullet.getCentre().getY()) < temp.getHeight())
-				{
+		for (GameObject temp : EnemiesList) {
+			for (GameObject Bullet : BulletList) {
+				if (Math.abs(temp.getCentre().getX() - Bullet.getCentre().getX()) < temp.getWidth()
+						&& Math.abs(temp.getCentre().getY() - Bullet.getCentre().getY()) < temp.getHeight()) {
 					EnemiesList.remove(temp);
 					BulletList.remove(Bullet);
 					Score++;
@@ -140,104 +136,103 @@ public class Model {
 	}
 
 	private void eagleLogic() {
-		for(Eagle temp:Eagles) {
+		for (Eagle temp : Eagles) {
 
 			temp.getCentre().setBoundary(size);
-			if(HovercatPositionToAttack == null) {
+			if (HovercatPositionToAttack == null) {
 				HovercatPositionToAttack = HoverCat.getCentre();
 				HovercatDirectionToAttack = HovercatPositionToAttack.MinusPoint(temp.getCentre()).Normal();
-				}
+			}
 
-			if(temp.getCentre().getX()> HovercatPositionToAttack.getX() && temp.getCentre().getY()>HovercatPositionToAttack.getY())
+			if (temp.getCentre().getX() > HovercatPositionToAttack.getX() && temp.getCentre().getY() > HovercatPositionToAttack.getY())
 				EagleReachedPoint = true;
 
 // redo this for when cat is above eagle
-			if(EagleReachedPoint)
+			if (EagleReachedPoint)
 				temp.getCentre().ApplyVector(new Vector3f(2, 2, 0));
 			else
-				temp.getCentre().ApplyVector(new Vector3f(HovercatDirectionToAttack.getX()*3, -HovercatDirectionToAttack.getY()*3, 0));
+				temp.getCentre().ApplyVector(new Vector3f(HovercatDirectionToAttack.getX() * 3, -HovercatDirectionToAttack.getY() * 3, 0));
 
-			if(temp.eagleAttacked(getPlayer()) || ((temp.getCentre().getX()<1) || (temp.getCentre().getX()>size-2))) {
+			if (temp.eagleAttacked(getPlayer()) || ((temp.getCentre().getX() < 1) || (temp.getCentre().getX() > size - 2))) {
 				Eagles.remove(temp);
 				HovercatPositionToAttack = null;
 				EagleReachedPoint = false;
 			}
 		}
+		if (NumDogs < 1 && NumIntrudercats < 1 && Eagles.isEmpty() && NumEagles > 0) {
+			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (size / 2), 0), 'r'));
+		}
 	}
 
 	private void dogLogic() {
-		for(Doggo temp:Dogs){
+		for (Doggo temp : Dogs) {
 			System.out.println("doggo size: " + Dogs.size());
 			temp.getCentre().setBoundary(size);
 
 			//which direction to move
-			if(temp.getDirection()=='l') {
+			if (temp.getDirection() == 'l') {
 				temp.getCentre().ApplyVector(new Vector3f(-1, 0, 0));
-			}
-			else {
+			} else {
 				temp.getCentre().ApplyVector(new Vector3f(1, 0, 0));
 			}
 
 			//turns around at sides
-			if(temp.getCentre().getX()<1) {
+			if (temp.getCentre().getX() < 1) {
 				temp.changeDirection('r');
 				temp.setTexture("res/dogb.png");
-			}
-			else if(temp.getCentre().getX()>size-2) {
+			} else if (temp.getCentre().getX() > size - 2) {
 				temp.changeDirection('l');
 				temp.setTexture("res/dog.png");
 			}
 
-			if(temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX()<1) || (temp.getCentre().getX()>size-2))) {
+			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 1) || (temp.getCentre().getX() > size - 2))) {
 				Dogs.remove(temp);
 				NumDogs--;
 			}
 		}
-		if(Dogs.isEmpty() && NumDogs > 0) {
-			Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
+		if (Dogs.isEmpty() && NumDogs > 0) {
+			Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(size - 50, size - 5, 0), 'l'));
 		}
 	}
 
 	private void intruderCatLogic() {
-		for(Intrudercat temp: IntruderCats){
+		for (Intrudercat temp : IntruderCats) {
 			temp.getCentre().setBoundary(size);
 			Vector3f dir = HoverCat.getCentre().MinusPoint(temp.getCentre()).Normal();
 
-			temp.getCentre().ApplyVector(new Vector3f(dir.getX(),-dir.getY(),0));
-			if(dir.getX()<0 && temp.getDirection() != 'l') {
+			temp.getCentre().ApplyVector(new Vector3f(dir.getX(), -dir.getY(), 0));
+			if (dir.getX() < 0 && temp.getDirection() != 'l') {
 				temp.changeDirection('l');
-			}
-			else if(dir.getX()>0 && temp.getDirection() != 'r'){
+			} else if (dir.getX() > 0 && temp.getDirection() != 'r') {
 				temp.changeDirection('r');
 			}
 
-			if(temp.intrudercatAttacked(getPlayer())) {
+			if (temp.intrudercatAttacked(getPlayer())) {
 				IntruderCats.remove(temp);
+				NumIntrudercats--;
 			}
 		}
-		if(NumDogs < 1 && IntruderCats.isEmpty())
-		{
-			IntruderCats.add(new Intrudercat("res/intrudercatB.png",150,50,new Point3f(size-5,(int)Math.random()*size-5,0), 'l'));
+		if (NumDogs < 1 && IntruderCats.isEmpty() && NumIntrudercats > 0) {
+			IntruderCats.add(new Intrudercat("res/intrudercatB.png", 150, 50, new Point3f(size - 5, (int) Math.random() * size - 5, 0), 'l'));
 		}
 	}
 
 	private void ratKingLogic() {
-		for(GameObject temp: IntruderCats){
+		for (GameObject temp : IntruderCats) {
 			temp.getCentre().setBoundary(size);
 		}
 	}
 
 	private void enemyLogic() {
 		// TODO Auto-generated method stub
-		for (GameObject temp : EnemiesList)
-		{
+		for (GameObject temp : EnemiesList) {
 
 			temp.getCentre().setBoundary(size);
 			// Move enemies
-			temp.getCentre().ApplyVector(new Vector3f(-1,0,0));
+			temp.getCentre().ApplyVector(new Vector3f(-1, 0, 0));
 
 			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getCentre().getX()==2)  // current boundary need to pass value to model
+			if (temp.getCentre().getX() == 2)  // current boundary need to pass value to model
 			{
 				EnemiesList.remove(temp);
 
@@ -260,16 +255,14 @@ public class Model {
 		// TODO Auto-generated method stub
 		// move bullets 
 
-		for (GameObject temp : BulletList)
-		{
+		for (GameObject temp : BulletList) {
 			//check to move them
 			temp.getCentre().setBoundary(size);
-			temp.getCentre().ApplyVector(new Vector3f(+1,0,0));
+			temp.getCentre().ApplyVector(new Vector3f(+1, 0, 0));
 			//see if they hit anything 
 
 			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getCentre().getX()==size)
-			{
+			if (temp.getCentre().getX() == size) {
 				BulletList.remove(temp);
 			}
 		}
@@ -281,28 +274,28 @@ public class Model {
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
 
 		//check for movement and if you fired a bullet 
-		HoverCat.getCentre().setBoundary(size-2);
-		if(Controller.getInstance().isKeyAPressed()){
-			HoverCat.getCentre().ApplyVector( new Vector3f(-3,0,0));
+		HoverCat.getCentre().setBoundary(size - 2);
+		if (Controller.getInstance().isKeyAPressed()) {
+			HoverCat.getCentre().ApplyVector(new Vector3f(-3, 0, 0));
 			HoverCat.changeDirection('l');
 			HoverCat.setTexture("res/hovercatB.png");
 		}
 
-		if(Controller.getInstance().isKeyDPressed()) {
-			HoverCat.getCentre().ApplyVector( new Vector3f(3,0,0));
+		if (Controller.getInstance().isKeyDPressed()) {
+			HoverCat.getCentre().ApplyVector(new Vector3f(3, 0, 0));
 			HoverCat.changeDirection('r');
 			HoverCat.setTexture("res/hovercatA.png");
 		}
 
-		if(Controller.getInstance().isKeyWPressed()) {
-			HoverCat.getCentre().ApplyVector( new Vector3f(0,3,0));
+		if (Controller.getInstance().isKeyWPressed()) {
+			HoverCat.getCentre().ApplyVector(new Vector3f(0, 3, 0));
 		}
 
-		if(Controller.getInstance().isKeySPressed()){
-			HoverCat.getCentre().ApplyVector( new Vector3f(0,-3,0));
+		if (Controller.getInstance().isKeySPressed()) {
+			HoverCat.getCentre().ApplyVector(new Vector3f(0, -3, 0));
 		}
 
-		if(Controller.getInstance().isKeySpacePressed()) {
+		if (Controller.getInstance().isKeySpacePressed()) {
 			CreateBullet();
 			Controller.getInstance().setKeySpacePressed(false);
 		}
