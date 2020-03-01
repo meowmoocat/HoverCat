@@ -52,11 +52,11 @@ public class MainWindow {
 
 
 	public MainWindow() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (int) screenSize.getWidth()-50;
-		int height = (int) screenSize.getHeight()-50;
-		if(width<height) height=width;
-		else width=height;
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = 1079;
+		int height = 835;
+//		if(width<height) height=width;
+//		else width=height;
 
 		frame.setSize(width, height);  // you can customise this later and adapt it to change on size.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.

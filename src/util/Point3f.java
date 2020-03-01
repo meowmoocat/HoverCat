@@ -32,8 +32,9 @@ public class Point3f {
 	private float y;
 	private float z;
 	
-	private int boundary=700;
-	
+	private int boundaryY=800;
+	private int boundaryX=1067;
+
 	
 	// default constructor
 	public Point3f() { 
@@ -49,9 +50,10 @@ public class Point3f {
 		this.setZ(z); 
 	}
 	
-	public void setBoundary(int boundary) {
-		this.boundary = boundary;
-		
+	public void setBoundary(int boundaryX, int boundaryY) {
+		this.boundaryX = boundaryX;
+		this.boundaryY = boundaryY;
+
 	}
 
 	// sometimes for different algorithms we will need to address the point using positions 0 1 2 
@@ -96,14 +98,20 @@ public class Point3f {
 	
 	 //Use for direct application of a Vector 
 	public void ApplyVector(Vector3f vector) { 
-		 setX(CheckBoundary(this.getX()+vector.getX()));
-		 setY(CheckBoundary(this.getY()-vector.getY()));
-		 setZ(CheckBoundary(this.getZ()-vector.getZ())); 
+		 setX(CheckBoundaryX(this.getX()+vector.getX()));
+		 setY(CheckBoundaryY(this.getY()-vector.getY()));
+		 setZ(CheckBoundaryY(this.getZ()-vector.getZ()));
 	}
 
-	private float CheckBoundary(float f) {
+	private float CheckBoundaryX(float f) {
 		if (f<0) f=0.0f;
-		if (f>boundary) f = (float) boundary;
+		if (f>boundaryX) f = (float) boundaryX;
+//		System.out.println("boundary: "+boundary+"\tf: "+f);
+		return f;
+	}
+	private float CheckBoundaryY(float f) {
+		if (f<0) f=0.0f;
+		if (f>boundaryY) f = (float) boundaryY;
 //		System.out.println("boundary: "+boundary+"\tf: "+f);
 		return f;
 	}
