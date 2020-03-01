@@ -1,7 +1,7 @@
 package util;
 
 public class Hovercat extends GameObject{
-	private int lives = 4;
+	private int lives = 9;
 	private Areas attack1 = new Areas(new Point3f(70,5,0), 40,10);
 	private Areas attack2 = new Areas(new Point3f(25,13,0), 26,100);
 	private Areas weak = new Areas(new Point3f(-5,-8,0),16, 140);

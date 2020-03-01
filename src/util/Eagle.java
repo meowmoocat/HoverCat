@@ -27,7 +27,6 @@ public class Eagle extends GameObject{
 		{
 			attack1 = new Areas(new Point3f(0,0,0),0,0);
 			attack2 = new Areas(new Point3f(0,0,0),0,0);
-			player.setLives(player.getLives()+1);
 			return true;
 		}
 		return false;

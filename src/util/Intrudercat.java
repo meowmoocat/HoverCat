@@ -3,7 +3,7 @@ package util;
 public class Intrudercat extends GameObject{
 	private Areas attack1 = new Areas(new Point3f(70,5,0), 40,10);
 	private Areas attack2 = new Areas(new Point3f(25,13,0), 26,100);
-	private Areas weak = new Areas(new Point3f(0,-8,0),16, 130);
+	private Areas weak = new Areas(new Point3f(0,-8,0),15, 100);
 
 	public Intrudercat(String textureLocation, int width, int height, Point3f centre, char direction) {
 		super(textureLocation, width, height, centre, direction);

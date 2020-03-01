@@ -188,13 +188,16 @@ public class Model {
 				temp.setTexture("res/dog.png");
 			}
 
-			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 5) || (temp.getCentre().getX() > size - 2))) {
+			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 4) || (temp.getCentre().getX() > size - 4))) {
 				Dogs.remove(temp);
 				NumDogs--;
 			}
 		}
 		if (Dogs.isEmpty() && NumDogs > 0) {
-			Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(size - 50, size - 5, 0), 'l'));
+			if(HoverCat.getCentre().getX() > size/2)
+				Dogs.add(new Doggo("res/dogb.png", 140, 90, new Point3f(5, size - 5, 0), 'r'));
+			else
+				Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(size - 50, size - 5, 0), 'l'));
 		}
 	}
 
@@ -216,7 +219,7 @@ public class Model {
 			}
 		}
 		if (NumDogs < 1 && IntruderCats.isEmpty() && NumIntrudercats > 0) {
-			IntruderCats.add(new Intrudercat("res/intrudercatB.png", 150, 50, new Point3f(size - 5, (int) Math.random() * size - 5, 0), 'l'));
+			IntruderCats.add(new Intrudercat("res/intrudercatB.png", 150, 50, new Point3f(size - 5, (int) Math.random() * size, 0), 'l'));
 		}
 	}
 
