@@ -307,7 +307,7 @@ public class Model {
 			CreateBullet();
 			keyboardController.getInstance().setKeySpacePressed(false);
 		}
-		if (MouseController.getInstance().isMouseMoved()) {
+		if (mouseController.getInstance().isMouseMoved()) {
 			Vector3f dir = MouseController.getInstance().getMoveTo().MinusPoint(HoverCat.getCentre()).Normal();
 			HoverCat.getCentre().ApplyVector(new Vector3f(dir.getX()*3, -dir.getY()*3, 0));
 			if (dir.getX() < 0 && HoverCat.getDirection() != 'l') {
