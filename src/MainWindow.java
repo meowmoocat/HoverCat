@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import util.Point3f;
 import util.UnitTests;
 
 /*
@@ -47,7 +43,9 @@ public class MainWindow {
 	private static JFrame frame = new JFrame("Hover Cat adventures");   // Change to the name of your game
 	private static Model gameworld = new Model();
 	private static Viewer canvas = new Viewer(gameworld);
-	private KeyListener Controller = new Controller();
+	private KeyListener Controller1 = new KeyboardController();
+	private MouseListener Controller2 = new MouseController();
+	private MouseMotionListener Controller3 = new MouseController();
 	private static int TargetFPS = 100;
 	private static boolean startGame = false;
 	private JLabel BackgroundImageForStartMenu;
@@ -76,7 +74,9 @@ public class MainWindow {
 				startMenuButton.setVisible(false);
 				BackgroundImageForStartMenu.setVisible(false);
 				canvas.setVisible(true);
-				canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+				canvas.addKeyListener(Controller1);    //adding the controller to the Canvas
+				canvas.addMouseListener(Controller2);
+				canvas.addMouseMotionListener(Controller3);
 				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
 				startGame=true;
 			}});

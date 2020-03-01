@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.sql.SQLOutput;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import util.*;
@@ -31,7 +30,8 @@ SOFTWARE.
 public class Model {
 
 	private Hovercat HoverCat;
-	private Controller controller = Controller.getInstance();
+	private KeyboardController keyboardController = KeyboardController.getInstance();
+	private MouseController mouseController = MouseController.getInstance();
 	private CopyOnWriteArrayList<GameObject> EnemiesList = new CopyOnWriteArrayList<GameObject>();
 	private CopyOnWriteArrayList<GameObject> BulletList = new CopyOnWriteArrayList<GameObject>();
 	private CopyOnWriteArrayList<Doggo> Dogs = new CopyOnWriteArrayList<>();
@@ -169,7 +169,7 @@ public class Model {
 
 	private void dogLogic() {
 		for (Doggo temp : Dogs) {
-			System.out.println("doggo size: " + Dogs.size());
+//			System.out.println("doggo size: " + Dogs.size());
 			temp.getCentre().setBoundary(size);
 
 			//which direction to move
@@ -188,7 +188,7 @@ public class Model {
 				temp.setTexture("res/dog.png");
 			}
 
-			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 1) || (temp.getCentre().getX() > size - 2))) {
+			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 5) || (temp.getCentre().getX() > size - 2))) {
 				Dogs.remove(temp);
 				NumDogs--;
 			}
@@ -276,31 +276,42 @@ public class Model {
 		checkGameOver();
 		// smoother animation is possible if we make a target position  // done but may try to change things for students  
 
-		//check for movement and if you fired a bullet 
+		//check for movement and if you fired a bullet
 		HoverCat.getCentre().setBoundary(size - 2);
-		if (Controller.getInstance().isKeyAPressed()) {
+		if (keyboardController.getInstance().isKeyAPressed()) {
 			HoverCat.getCentre().ApplyVector(new Vector3f(-3, 0, 0));
 			HoverCat.changeDirection('l');
 			HoverCat.setTexture("res/hovercatB.png");
 		}
 
-		if (Controller.getInstance().isKeyDPressed()) {
+		if (keyboardController.getInstance().isKeyDPressed()) {
 			HoverCat.getCentre().ApplyVector(new Vector3f(3, 0, 0));
 			HoverCat.changeDirection('r');
 			HoverCat.setTexture("res/hovercatA.png");
 		}
 
-		if (Controller.getInstance().isKeyWPressed()) {
+		if (keyboardController.getInstance().isKeyWPressed()) {
 			HoverCat.getCentre().ApplyVector(new Vector3f(0, 3, 0));
 		}
 
-		if (Controller.getInstance().isKeySPressed()) {
+		if (KeyboardController.getInstance().isKeySPressed()) {
 			HoverCat.getCentre().ApplyVector(new Vector3f(0, -3, 0));
 		}
 
-		if (Controller.getInstance().isKeySpacePressed()) {
+		if (keyboardController.getInstance().isKeySpacePressed()) {
 			CreateBullet();
-			Controller.getInstance().setKeySpacePressed(false);
+			keyboardController.getInstance().setKeySpacePressed(false);
+		}
+		if (MouseController.getInstance().isMouseMoved()) {
+			Vector3f dir = MouseController.getInstance().getMoveTo().MinusPoint(HoverCat.getCentre()).Normal();
+			HoverCat.getCentre().ApplyVector(new Vector3f(dir.getX()*3, -dir.getY()*3, 0));
+			if (dir.getX() < 0 && HoverCat.getDirection() != 'l') {
+				HoverCat.changeDirection('l');
+				HoverCat.setTexture("res/hovercatB.png");
+			} else if (dir.getX() > 0 && HoverCat.getDirection() != 'r') {
+				HoverCat.changeDirection('r');
+				HoverCat.setTexture("res/hovercatA.png");
+			}
 		}
 
 	}

@@ -1,7 +1,5 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -29,7 +27,7 @@ SOFTWARE.
  */ 
 
 //Singeton pattern
-public class Controller implements KeyListener {
+public class KeyboardController implements KeyListener  {
         
 	   private static boolean KeyAPressed = false;
 	   private static boolean KeySPressed = false;
@@ -37,27 +35,28 @@ public class Controller implements KeyListener {
 	   private static boolean KeyWPressed = false;
 	   private static boolean KeySpacePressed = false;
 	   
-	   private static final Controller instance = new Controller();
+	   private static final KeyboardController instance = new KeyboardController();
 	   
-	 public Controller() { 
+	 public KeyboardController() {
 	}
 	 
-	 public static Controller getInstance(){
+	 public static KeyboardController getInstance(){
 	        return instance;
 	    }
 	   
 	@Override
-	// Key pressed , will keep triggering 
-	public void keyTyped(KeyEvent e) { 
-		 
+	// Key pressed , will keep triggering
+	public void keyTyped(KeyEvent e) {
+
 	}
 
+
 	@Override
-	public void keyPressed(KeyEvent e) 
-	{ 
-		switch (e.getKeyChar()) 
+	public void keyPressed(KeyEvent e)
+	{
+		switch (e.getKeyChar())
 		{
-			case 'a':setKeyAPressed(true);break;  
+			case 'a':setKeyAPressed(true);break;
 			case 's':setKeySPressed(true);break;
 			case 'w':setKeyWPressed(true);break;
 			case 'd':setKeyDPressed(true);break;
@@ -69,18 +68,18 @@ public class Controller implements KeyListener {
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
-		}  
-		
-	 // You can implement to keep moving while pressing the key here . 
-		
+		}
+
+	 // You can implement to keep moving while pressing the key here .
+
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) 
-	{ 
-		switch (e.getKeyChar()) 
+	public void keyReleased(KeyEvent e)
+	{
+		switch (e.getKeyChar())
 		{
-			case 'a':setKeyAPressed(false);break;  
+			case 'a':setKeyAPressed(false);break;
 			case 's':setKeySPressed(false);break;
 			case 'w':setKeyWPressed(false);break;
 			case 'd':setKeyDPressed(false);break;
@@ -88,13 +87,13 @@ public class Controller implements KeyListener {
 			case 'S':setKeySPressed(false);break;
 			case 'W':setKeyWPressed(false);break;
 			case 'D':setKeyDPressed(false);break;
-			case ' ':setKeySpacePressed(false);break;   
+			case ' ':setKeySpacePressed(false);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
-		}  
-		 //upper case 
-	
+		}
+		 //upper case
+
 	}
 
 
@@ -145,9 +144,9 @@ public class Controller implements KeyListener {
 
 	public void setKeySpacePressed(boolean keySpacePressed) {
 		KeySpacePressed = keySpacePressed;
-	} 
-	
-	 
+	}
+
+
 }
 
 /*
