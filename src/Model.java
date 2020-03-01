@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import util.*;
@@ -43,6 +44,12 @@ public class Model {
 	private int size;
 	private Boolean GameOver = false;
 	private Boolean GameFinished = false;
+	private Boolean EagleReachedPoint = false;
+	private Point3f HovercatPositionToAttack = null;
+	private Vector3f HovercatDirectionToAttack = null;
+	private int NumIntrudercats = 0;
+	private int NumDogs = 2;
+	private int NumEagles = 0;
 
 	public Model() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -56,10 +63,13 @@ public class Model {
 		HoverCat = new Hovercat("res/hovercatA.png",150,50,new Point3f(400,400,0), 'r');
 		//Enemies starting with four
 
+		Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
 //		Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
 //		EnemiesList.add(new GameObject("res/UFO.png",50,50,new Point3f(size,(float)Math.random()*40+400,0), 'l'));
 //		IntruderCats.add(new Intrudercat("res/intrudercatB.png",150,50,new Point3f(size-5,(int)Math.random()*size-5,0), 'l'));
-		Eagles.add(new Eagle("res/eagle.png", 210,180, new Point3f(0,(int)Math.random()*(size/2), 0),'r'));
+//		Eagles.add(new Eagle("res/eagleb.png", 210,180, new Point3f(0,(float) Math.random()*(size/2), 0),'r'));
+
+//		Eagles.add(new Eagle("res/eagleb.png", 210,180, new Point3f(0,(float)Math.random()*size, 0),'r'));
 //		RatKing = new GameObject("res/Ninja.png", 100, 400, new Point3f(size, size/2,0), 'l');
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
 //		IntruderCats.add(new GameObject("res/UFO.png", 50, 50, new Point3f(size,(float)Math.random()*40+400,0)));
@@ -86,7 +96,8 @@ public class Model {
 		}
 	}
 
-	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly. 
+
+	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly.
 	public void gamelogic()
 	{
 		// Player Logic first 
@@ -98,6 +109,7 @@ public class Model {
 		dogLogic();
 		intruderCatLogic();
 		eagleLogic();
+
 		// Bullets move next 
 		attackLogic();
 		// interactions between objects 
@@ -127,23 +139,35 @@ public class Model {
 
 	}
 
-	private void eagleLogic(){
-		Vector3f dir = new Vector3f();
-
-		if(!Eagles.isEmpty()) {
-
-
-		}
+	private void eagleLogic() {
 		for(Eagle temp:Eagles) {
-			System.out.println("f");
-			dir = HoverCat.getCentre().MinusPoint(Eagles.get(0).getCentre()).Normal();
+
 			temp.getCentre().setBoundary(size);
-			temp.getCentre().ApplyVector(new Vector3f(dir.getX(), -dir.getY(), 0));
+			if(HovercatPositionToAttack == null) {
+				HovercatPositionToAttack = HoverCat.getCentre();
+				HovercatDirectionToAttack = HovercatPositionToAttack.MinusPoint(temp.getCentre()).Normal();
+				}
+
+			if(temp.getCentre().getX()> HovercatPositionToAttack.getX() && temp.getCentre().getY()>HovercatPositionToAttack.getY())
+				EagleReachedPoint = true;
+
+// redo this for when cat is above eagle
+			if(EagleReachedPoint)
+				temp.getCentre().ApplyVector(new Vector3f(2, 2, 0));
+			else
+				temp.getCentre().ApplyVector(new Vector3f(HovercatDirectionToAttack.getX()*3, -HovercatDirectionToAttack.getY()*3, 0));
+
+			if(temp.eagleAttacked(getPlayer()) || ((temp.getCentre().getX()<1) || (temp.getCentre().getX()>size-2))) {
+				Eagles.remove(temp);
+				HovercatPositionToAttack = null;
+				EagleReachedPoint = false;
+			}
 		}
 	}
 
 	private void dogLogic() {
 		for(Doggo temp:Dogs){
+			System.out.println("doggo size: " + Dogs.size());
 			temp.getCentre().setBoundary(size);
 
 			//which direction to move
@@ -166,7 +190,11 @@ public class Model {
 
 			if(temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX()<1) || (temp.getCentre().getX()>size-2))) {
 				Dogs.remove(temp);
+				NumDogs--;
 			}
+		}
+		if(Dogs.isEmpty() && NumDogs > 0) {
+			Dogs.add(new Doggo("res/dog.png",140, 90, new Point3f(size-50, size-5,0), 'l'));
 		}
 	}
 
@@ -186,6 +214,10 @@ public class Model {
 			if(temp.intrudercatAttacked(getPlayer())) {
 				IntruderCats.remove(temp);
 			}
+		}
+		if(NumDogs < 1 && IntruderCats.isEmpty())
+		{
+			IntruderCats.add(new Intrudercat("res/intrudercatB.png",150,50,new Point3f(size-5,(int)Math.random()*size-5,0), 'l'));
 		}
 	}
 

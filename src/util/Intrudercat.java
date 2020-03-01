@@ -3,7 +3,7 @@ package util;
 public class Intrudercat extends GameObject{
 	private Areas attack1 = new Areas(new Point3f(70,5,0), 40,10);
 	private Areas attack2 = new Areas(new Point3f(25,13,0), 26,100);
-	private Areas weak = new Areas(new Point3f(0,-8,0),16, 150);
+	private Areas weak = new Areas(new Point3f(0,-8,0),16, 130);
 
 	public Intrudercat(String textureLocation, int width, int height, Point3f centre, char direction) {
 		super(textureLocation, width, height, centre, direction);
@@ -34,7 +34,6 @@ public class Intrudercat extends GameObject{
 				|| catAttack1.Intercepts(player.getWeak()) || catAttack2.Intercepts(player.getAttack1())
 				|| catAttack2.Intercepts(player.getAttack2()) || catAttack2.Intercepts(player.getWeak())) {
 			player.setCentre(new Point3f((float)Math.random()*700, (float)Math.random()*700, 0));
-			System.out.println("x: "+player.getCentre().getX()+", y: "+player.getCentre().getY());
 			player.setLives(player.getLives()-1);
 		}
 		else if(catWeak.Intercepts(player.getAttack1()) || catWeak.Intercepts(player.getAttack2()))
