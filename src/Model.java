@@ -162,6 +162,9 @@ public class Model {
 		if (NumDogs < 1 && NumIntrudercats < 1 && Eagles.isEmpty() && NumEagles > 0) {
 			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (size / 2), 0), 'r'));
 		}
+		if (NumDogs < 1 && NumIntrudercats < 1 && NumEagles < 1) {
+			GameFinished = true;
+		}
 	}
 
 	private void dogLogic() {
@@ -326,10 +329,6 @@ public class Model {
 
 	public CopyOnWriteArrayList<GameObject> getBullets() {
 		return BulletList;
-	}
-
-	public int getScore() {
-		return Score;
 	}
 
 }
