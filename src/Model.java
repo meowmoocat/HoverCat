@@ -162,6 +162,7 @@ public class Model {
 		}
 		if (NumDogs < 1 && NumIntrudercats < 1 && Eagles.isEmpty() && NumEagles > 0) {
 			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (Height / 2), 0), 'r'));
+			NumEagles--;
 		}
 		if (NumDogs < 1 && NumIntrudercats < 1 && NumEagles < 1) {
 			GameFinished = true;
@@ -189,7 +190,7 @@ public class Model {
 				temp.setTexture("res/dog.png");
 			}
 
-			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 4) || (temp.getCentre().getX() > Width - 4))) {
+			if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 5) || (temp.getCentre().getX() > Width - 5))) {
 				Dogs.remove(temp);
 				NumDogs--;
 			}
