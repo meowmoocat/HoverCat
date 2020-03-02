@@ -32,8 +32,10 @@ SOFTWARE.
  */
 public class Viewer extends JPanel {
 	private long CurrentAnimationTime = 0;
+	private int FeathersCount = 0;
 
 	Model gameworld = new Model();
+
 
 	public Viewer(Model World) {
 		this.gameworld = World;
@@ -81,21 +83,6 @@ public class Viewer extends JPanel {
 		//Draw player
 		drawPlayer(x, y, width, height, texture, g);
 
-		//Draw Bullets 
-		// change back 
-		gameworld.getBullets().forEach((temp) ->
-		{
-			drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-					(int) temp.getHeight(), temp.getTexture(), g);
-		});
-
-		//Draw Enemies   
-//		gameworld.getEnemies().forEach((temp) ->
-//		{
-//			drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-//					(int) temp.getHeight(), temp.getTexture(),g);
-//
-//	    });
 		gameworld.getDoggos().forEach((temp) ->
 		{
 			drawDoggo((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
@@ -106,10 +93,25 @@ public class Viewer extends JPanel {
 			drawPlayer((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
 					(int) temp.getHeight(), temp.getTexture(), g);
 		});
+
 		gameworld.getEagles().forEach((temp) ->
 		{
 			drawEagle((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
 					(int) temp.getHeight(), temp.getTexture(), g);
+
+		});
+		gameworld.getFeathers().forEach((temp) ->
+		{
+			if(FeathersCount < 4) {
+//			if(CurrentAnimationTime - FeathersCount < 4) {
+				drawFeathers((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+						(int) temp.getHeight(), "res/feathers.png", g, FeathersCount);
+				FeathersCount++;
+			}
+			else {
+				gameworld.removeFeathers();
+				FeathersCount = 0;
+			}
 		});
 	}
 
@@ -121,6 +123,20 @@ public class Viewer extends JPanel {
 			Image eagle = ImageIO.read(TextureToLoad);
 			int currentPositionInAnimation = ((int) (CurrentAnimationTime % 1) * 1050);
 			g.drawImage(eagle, drawX, drawY, drawX + width, drawY + height, currentPositionInAnimation, 0,
+					currentPositionInAnimation + 1049, 899, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void drawFeathers(int x, int y, int width, int height, String texture, Graphics g, int counter) {
+		File TextureToLoad = new File(texture);
+		int drawX = x - (width / 2);
+		int drawY = y - (height / 2);
+		try {
+			Image feathers = ImageIO.read(TextureToLoad);
+			int currentPositionInAnimation = ((int) (counter)%4 * 1050);
+			g.drawImage(feathers, drawX, drawY, drawX + width, drawY + height, currentPositionInAnimation, 0,
 					currentPositionInAnimation + 1049, 899, null);
 		} catch (IOException e) {
 			e.printStackTrace();

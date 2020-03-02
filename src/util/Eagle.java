@@ -23,11 +23,11 @@ public class Eagle extends GameObject{
 //		else if(eagleWeak.Intercepts(player.getWeak())) {
 //			System.out.println("weak on weak");
 //		}
-		else if(eagleWeak.Intercepts(player.getAttack1()) || eagleWeak.Intercepts(player.getAttack2()))
+		if(eagleWeak.Intercepts(player.getAttack1()) || eagleWeak.Intercepts(player.getAttack2()))
 		{
 			attack1 = new Areas(new Point3f(0,0,0),0,0);
 			attack2 = new Areas(new Point3f(0,0,0),0,0);
-			player.setLives(player.getLives()+1);
+//			player.setLives(player.getLives()+1);
 			return true;
 		}
 		return false;

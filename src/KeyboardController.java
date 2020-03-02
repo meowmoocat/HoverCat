@@ -33,7 +33,6 @@ public class KeyboardController implements KeyListener  {
 	   private static boolean KeySPressed = false;
 	   private static boolean KeyDPressed = false;
 	   private static boolean KeyWPressed = false;
-	   private static boolean KeySpacePressed = false;
 	   
 	   private static final KeyboardController instance = new KeyboardController();
 	   
@@ -64,7 +63,6 @@ public class KeyboardController implements KeyListener  {
 			case 'S':setKeySPressed(true);break;
 			case 'W':setKeyWPressed(true);break;
 			case 'D':setKeyDPressed(true);break;
-			case ' ':setKeySpacePressed(true);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
@@ -87,7 +85,6 @@ public class KeyboardController implements KeyListener  {
 			case 'S':setKeySPressed(false);break;
 			case 'W':setKeyWPressed(false);break;
 			case 'D':setKeyDPressed(false);break;
-			case ' ':setKeySpacePressed(false);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
@@ -135,17 +132,6 @@ public class KeyboardController implements KeyListener  {
 	public void setKeyWPressed(boolean keyWPressed) {
 		KeyWPressed = keyWPressed;
 	}
-
-
-	public boolean isKeySpacePressed() {
-		return KeySpacePressed;
-	}
-
-
-	public void setKeySpacePressed(boolean keySpacePressed) {
-		KeySpacePressed = keySpacePressed;
-	}
-
 
 }
 
