@@ -64,7 +64,6 @@ public class KeyboardController implements KeyListener  {
 			case 'W':setKeyWPressed(true);break;
 			case 'D':setKeyDPressed(true);break;
 		    default:
-		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
 		}
 
@@ -86,7 +85,6 @@ public class KeyboardController implements KeyListener  {
 			case 'W':setKeyWPressed(false);break;
 			case 'D':setKeyDPressed(false);break;
 		    default:
-		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
 		}
 		 //upper case

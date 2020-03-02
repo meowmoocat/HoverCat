@@ -106,13 +106,11 @@ public class Point3f {
 	private float CheckBoundaryX(float f) {
 		if (f<0) f=0.0f;
 		if (f>boundaryX) f = (float) boundaryX;
-//		System.out.println("boundary: "+boundary+"\tf: "+f);
 		return f;
 	}
 	private float CheckBoundaryY(float f) {
 		if (f<0) f=0.0f;
 		if (f>boundaryY) f = (float) boundaryY;
-//		System.out.println("boundary: "+boundary+"\tf: "+f);
 		return f;
 	}
 

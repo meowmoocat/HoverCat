@@ -28,35 +28,29 @@ public class MouseController implements MouseListener, MouseMotionListener {
     public void mouseClicked(MouseEvent e) {
         MouseMoved = true;
         MoveTo = new Point3f(e.getX(), e.getY(), 0);
-//        System.out.println("clicked");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-//        System.out.println("pressed");
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         MouseMoved = false;
-//        System.out.println("released");
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-//        System.out.println("entered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-//        System.out.println("exited");
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         MouseMoved = true;
         MoveTo = new Point3f(e.getX(), e.getY(), 0);
-//        System.out.println("mouse dragged");
     }
 
     @Override

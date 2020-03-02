@@ -32,16 +32,11 @@ public class Model {
 	private Hovercat HoverCat;
 	private KeyboardController keyboardController = KeyboardController.getInstance();
 	private MouseController mouseController = MouseController.getInstance();
-	private CopyOnWriteArrayList<GameObject> EnemiesList = new CopyOnWriteArrayList<GameObject>();
 	private CopyOnWriteArrayList<GameObject> Feathers = new CopyOnWriteArrayList<GameObject>();
 	private CopyOnWriteArrayList<Doggo> Dogs = new CopyOnWriteArrayList<>();
 	private CopyOnWriteArrayList<Intrudercat> IntruderCats = new CopyOnWriteArrayList<>();
 	private CopyOnWriteArrayList<Eagle> Eagles = new CopyOnWriteArrayList<>();
-	private GameObject RatKing = new GameObject();
-	private CopyOnWriteArrayList<Rat> Rats = new CopyOnWriteArrayList<Rat>();
 
-//	private int Score = 0;
-//	private int size;
 	private int Width = 1067;
 	private int Height = 780;
 	private Boolean GameOver = false;
@@ -51,18 +46,23 @@ public class Model {
 	private Boolean EagleKilled = false;
 	private Point3f HovercatPositionToAttack = null;
 	private Vector3f HovercatDirectionToAttack = null;
-	private int NumIntrudercats = 0;
-	private int NumDogs = 0;
-	private int NumEagles = 5;
-	private int NumRats = 5;
+	private int NumIntrudercats = 2;
+	private int NumDogs = 2;
+	private int NumEagles = 2;
+	private int Difficulty = 1;
 
 	public Model() {
 		//setup game world
 		//Player
 		HoverCat = new Hovercat("res/hovercatA.png", 150, 50, new Point3f(700, 400, 0), 'r');
-		//Enemies starting with four
+		Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(Width - 30, Height - 23, 0), 'l'));
+		if(Difficulty == 4) {
+			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (Height / 2), 0), 'r'));
+		}
+	}
 
-//		Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(Width - 30, Height - 23, 0), 'l'));
+	public void setDifficulty(int difficulty) {
+		Difficulty = difficulty;
 	}
 
 	public Boolean getGameFinished() {
@@ -81,62 +81,16 @@ public class Model {
 
 	// This is the heart of the game , where the model takes in all the inputs ,decides the outcomes and then changes the model accordingly.
 	public void gamelogic() {
+
 		// Player Logic first 
 		playerLogic();
 
-		//Attack dogs
 		dogLogic();
 		intruderCatLogic();
 		eagleLogic();
-		ratLogic();
 
-		// interactions between objects
 	}
 
-//	private void gameLogic() {
-
-		// this is a way to increment across the array list data structure
-
-		//see if they hit anything 
-		// using enhanced for-loop style as it makes it alot easier both code wise and reading wise too 
-//		for (GameObject temp : EnemiesList) {
-//			for (GameObject Bullet : BulletList) {
-//				if (Math.abs(temp.getCentre().getX() - Bullet.getCentre().getX()) < temp.getWidth()
-//						&& Math.abs(temp.getCentre().getY() - Bullet.getCentre().getY()) < temp.getHeight()) {
-//					EnemiesList.remove(temp);
-//					BulletList.remove(Bullet);
-//					Score++;
-//				}
-//			}
-//		}
-
-//	}
-
-	private void ratLogic() {
-		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-50, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-60, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-70, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-80, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-90, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-100, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-110, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-120, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-130, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-140, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-150, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-160, 0), 'r'));
-//		Rats.add(new Rat("res/UFO.png", 30, 10, new Point3f(Width-50, Height-170, 0), 'r'));
-		for (Rat temp : Rats){
-
-		}
-//		if (NumDogs < 1 && NumIntrudercats < 1 && NumEagles <1 && NumRats > 0) {
-//			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (Height / 2), 0), 'r'));
-//			NumRats--;
-//		}
-		if (NumDogs < 1 && NumIntrudercats < 1 && NumEagles < 1 && NumRats < 1) {
-			GameFinished = true;
-		}
-	}
 
 	private void eagleLogic() {
 		for (Eagle temp : Eagles) {
@@ -167,26 +121,24 @@ public class Model {
 				EagleReachedPoint = false;
 			}
 		}
-		if (NumDogs < 1 && NumIntrudercats < 1 && Eagles.isEmpty() && NumEagles >= 0 && FeathersGone) {
+		if (((NumDogs < 1 && NumIntrudercats < 1) || Difficulty == 4) && Eagles.isEmpty() && NumEagles >= 0 && FeathersGone) {
 			EagleKilled = false;
 			Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (Height / 2), 0), 'r'));
 		}
 		if (NumDogs < 0 && NumIntrudercats < 0 && NumEagles < 0) {
-			System.out.println("here");
 			GameFinished = true;
 		}
 	}
 
 	private void dogLogic() {
 		for (Doggo temp : Dogs) {
-//			System.out.println("doggo size: " + Dogs.size());
 			temp.getCentre().setBoundary(Width, Height);
 
 			//which direction to move
 			if (temp.getDirection() == 'l') {
-				temp.getCentre().ApplyVector(new Vector3f(-1, 0, 0));
+				temp.getCentre().ApplyVector(new Vector3f(-1*Difficulty, 0, 0));
 			} else {
-				temp.getCentre().ApplyVector(new Vector3f(1, 0, 0));
+				temp.getCentre().ApplyVector(new Vector3f(1*Difficulty, 0, 0));
 			}
 
 			//turns around at sides
@@ -216,7 +168,7 @@ public class Model {
 			temp.getCentre().setBoundary(Width, Height);
 			Vector3f dir = HoverCat.getCentre().MinusPoint(temp.getCentre()).Normal();
 
-			temp.getCentre().ApplyVector(new Vector3f(dir.getX(), -dir.getY(), 0));
+			temp.getCentre().ApplyVector(new Vector3f(dir.getX()*Difficulty, -dir.getY()*Difficulty, 0));
 			if (dir.getX() < 0 && temp.getDirection() != 'l') {
 				temp.changeDirection('l');
 			} else if (dir.getX() > 0 && temp.getDirection() != 'r') {
@@ -232,58 +184,6 @@ public class Model {
 			IntruderCats.add(new Intrudercat("res/intrudercatB.png", 150, 50, new Point3f(Width - 5, (int) Math.random() * Height, 0), 'l'));
 		}
 	}
-
-	private void ratKingLogic() {
-		for (GameObject temp : IntruderCats) {
-			temp.getCentre().setBoundary(Width, Height);
-		}
-	}
-
-	private void enemyLogic() {
-		// TODO Auto-generated method stub
-		for (GameObject temp : EnemiesList) {
-
-			temp.getCentre().setBoundary(Width, Height);
-			// Move enemies
-			temp.getCentre().ApplyVector(new Vector3f(-1, 0, 0));
-
-			//see if they get to the top of the screen ( remember 0 is the top 
-			if (temp.getCentre().getX() == 2)  // current boundary need to pass value to model
-			{
-				EnemiesList.remove(temp);
-
-				// enemies win so score decreased 
-//				Score--;
-			}
-		}
-
-//		if (EnemiesList.size()<2)
-//		{
-//			while (EnemiesList.size()<6)
-//			{
-//				EnemiesList.add(new GameObject("res/UFO.png",50,50,
-//						new Point3f(size,(float)Math.random()*size,0), 'l'));
-//			}
-//		}
-	}
-
-//	private void attackLogic() {
-//		// TODO Auto-generated method stub
-//		// move bullets
-//
-//		for (GameObject temp : BulletList) {
-//			//check to move them
-//			temp.getCentre().setBoundary(Width, Height);
-//			temp.getCentre().ApplyVector(new Vector3f(+1, 0, 0));
-//			//see if they hit anything
-//
-//			//see if they get to the top of the screen ( remember 0 is the top
-//			if (temp.getCentre().getX() == Width) {
-//				BulletList.remove(temp);
-//			}
-//		}
-//
-//	}
 
 	private void playerLogic() {
 		checkGameOver();
@@ -325,11 +225,6 @@ public class Model {
 
 	}
 
-//	private void CreateBullet() {
-//		BulletList.add(new GameObject("res/Bullet.png",32,64,
-//				new Point3f(HoverCat.getCentre().getX(),HoverCat.getCentre().getY(),0.0f),'r'));
-//	}
-
 	public Hovercat getPlayer() {
 		return HoverCat;
 	}
@@ -354,10 +249,6 @@ public class Model {
 		Feathers.remove(0);
 		FeathersGone = true;
 	}
-
-//	public CopyOnWriteArrayList<GameObject> getBullets() {
-//		return BulletList;
-//	}
 
 }
 
