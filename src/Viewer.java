@@ -1,9 +1,13 @@
+/*
+	Órla Keating
+	15205679
+*/
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 
 /*
@@ -35,6 +39,7 @@ public class Viewer extends JPanel {
 	private int FeathersCount = 0;
 
 	Model gameworld = new Model();
+	private File textureToLoad;
 
 
 	public Viewer(Model World) {
@@ -130,11 +135,11 @@ public class Viewer extends JPanel {
 	}
 
 	private void drawFeathers(int x, int y, int width, int height, String texture, Graphics g, int counter) {
-		File TextureToLoad = new File(texture);
+		File textureToLoad = new File(texture);
 		int drawX = x - (width / 2);
 		int drawY = y - (height / 2);
 		try {
-			Image feathers = ImageIO.read(TextureToLoad);
+			Image feathers = ImageIO.read(textureToLoad);
 			int currentPositionInAnimation = ((int) (counter)%4 * 1050);
 			g.drawImage(feathers, drawX, drawY, drawX + width, drawY + height, currentPositionInAnimation, 0,
 					currentPositionInAnimation + 1049, 899, null);
@@ -187,21 +192,6 @@ public class Viewer extends JPanel {
 			e.printStackTrace();
 		}
 	}
-
-	private void drawBullet(int x, int y, int width, int height, String texture, Graphics g) {
-		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues
-		// depending your eclipse install or if your running this without an IDE
-		try {
-			Image myImage = ImageIO.read(TextureToLoad);
-			//64 by 128 
-			g.drawImage(myImage, x, y, x + width, y + width, 0, 0, 63, 127, null);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 
 	private void drawPlayer(int x, int y, int width, int height, String texture, Graphics g) {
 		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues

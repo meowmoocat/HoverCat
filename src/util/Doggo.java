@@ -1,11 +1,23 @@
+/*
+	Órla Keating
+	15205679
+*/
 package util;
 
 public class Doggo extends GameObject {
-	private Areas attack = new Areas(new Point3f(-45,0,0), 90,50);
-	private Areas weak = new Areas(new Point3f(-25,0,0),90, 90);
+	private Areas attack;
+	private Areas weak;
 
 	public Doggo(String textureLocation, int width, int height, Point3f centre, char direction) {
 		super(textureLocation, width, height, centre, direction);
+		if(direction == 'l') {
+			attack = new Areas(new Point3f(-45,0,0), 90,50);
+			weak = new Areas(new Point3f(-25,0,0),90, 90);
+		}
+		else {
+			attack = new Areas(new Point3f(45,0,0), 90,50);
+			weak = new Areas(new Point3f(25,0,0),90, 90);
+		}
 	}
 
 	@Override

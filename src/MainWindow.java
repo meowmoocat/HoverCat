@@ -1,13 +1,17 @@
+/*
+	Órla Keating
+	15205679
+*/
+
+import util.UnitTests;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import util.UnitTests;
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -36,7 +40,7 @@ SOFTWARE.
 
 
 public class MainWindow implements ActionListener {
-    private static JFrame frame = new JFrame("Hover Cat adventures");   // Change to the name of your game
+    private static JFrame frame = new JFrame("Hover Cat Adventures");   // Change to the name of your game
     private static Model gameworld = new Model();
     private static Viewer canvas = new Viewer(gameworld);
     private KeyListener Controller1 = new KeyboardController();
@@ -66,69 +70,18 @@ public class MainWindow implements ActionListener {
 
 
         EasyButton = new JButton("Easy");
-//		easyButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				easyButton.setVisible(false);
-//				BackgroundImageForStartMenu.setVisible(false);
-//				canvas.setVisible(true);
-//				canvas.addKeyListener(Controller1);    //adding the controller to the Canvas
-//				canvas.addMouseListener(Controller2);
-//				canvas.addMouseMotionListener(Controller3);
-//				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-//				startGame=true;
-//				Difficulty = 1;
-//			}});
         EasyButton.setBounds(200, height / 2 - 20, 100, 40);
         EasyButton.addActionListener(this);
 
         MediumButton = new JButton("Medium");
-//		easyButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				mediumButon.setVisible(false);
-//				BackgroundImageForStartMenu.setVisible(false);
-//				canvas.setVisible(true);
-//				canvas.addKeyListener(Controller1);    //adding the controller to the Canvas
-//				canvas.addMouseListener(Controller2);
-//				canvas.addMouseMotionListener(Controller3);
-//				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-//				startGame=true;
-//				Difficulty = 2;
-//			}});
         MediumButton.setBounds(300, height / 2 - 20, 100, 40);
         MediumButton.addActionListener(this);
 
         HardButton = new JButton("Hard");
-//		easyButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				hardButton.setVisible(false);
-//				BackgroundImageForStartMenu.setVisible(false);
-//				canvas.setVisible(true);
-//				canvas.addKeyListener(Controller1);    //adding the controller to the Canvas
-//				canvas.addMouseListener(Controller2);
-//				canvas.addMouseMotionListener(Controller3);
-//				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-//				startGame=true;
-//				Difficulty = 3;
-//			}});
         HardButton.setBounds(400, height / 2 - 20, 100, 40);
         HardButton.addActionListener(this);
 
         ExtremeButton = new JButton("Extreme");  // start button
-//		extremeButton.addActionListener(new ActionListener(){
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				extremeButton.setVisible(false);
-//				BackgroundImageForStartMenu.setVisible(false);
-//				canvas.setVisible(true);
-//				canvas.addKeyListener(Controller1);    //adding the controller to the Canvas
-//				canvas.addMouseListener(Controller2);
-//				canvas.addMouseMotionListener(Controller3);
-//				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-//				startGame=true;
-//			}});
         ExtremeButton.setBounds(500, height / 2 - 20, 100, 40);
         ExtremeButton.addActionListener(this);
 
@@ -155,6 +108,11 @@ public class MainWindow implements ActionListener {
     	if(e.getSource() == MediumButton) Difficulty = 2;
     	if(e.getSource() == HardButton) Difficulty = 3;
     	if(e.getSource() == ExtremeButton) Difficulty = 4;
+
+    	EasyButton.setVisible(false);
+    	MediumButton.setVisible(false);
+    	HardButton.setVisible(false);
+    	ExtremeButton.setVisible(false);
 
         BackgroundImageForStartMenu.setVisible(false);
         canvas.setVisible(true);
@@ -186,7 +144,6 @@ public class MainWindow implements ActionListener {
 
             //UNIT test to see if framerate matches
             UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, TargetFPS);
-
         }
 
     }
@@ -201,17 +158,12 @@ public class MainWindow implements ActionListener {
         // model update
         gameworld.gamelogic();
         // view update
-
         canvas.updateview();
 
         // Both these calls could be setup as a thread but we want to simplify the game logic for you.
         //score update
         frame.setTitle("Lives =  " + gameworld.getPlayer().getLives());
-
-
     }
-
-
 }
 
 /*

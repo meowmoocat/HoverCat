@@ -1,3 +1,7 @@
+/*
+	Órla Keating
+	15205679
+*/
 package util;
 /*
  * Modified by Abraham Campbell on 15/01/2020.
@@ -74,7 +78,6 @@ public class Point3f {
     }
 
 
-
 	 //implement Point plus a Vector and comment what the method does 
 	public Point3f PlusVector(Vector3f Additonal) { 
 		return new Point3f(this.getX()+Additonal.getX(), this.getY()+Additonal.getY(), this.getZ()+Additonal.getZ());
@@ -84,8 +87,7 @@ public class Point3f {
 	public Point3f MinusVector(Vector3f Minus) { 
 		return new Point3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
 	}
-	
-	
+
 	/// implement Point - Point  and comment what the method does  
 	public Vector3f MinusPoint(Point3f Minus) {
 		return new Vector3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
@@ -93,8 +95,6 @@ public class Point3f {
 	public Point3f plusPoint(Point3f plus) {
 		return new Point3f(this.getX()+ plus.getX(), this.getY() + plus.getY(), this.getZ()+plus.getZ());
 	}
-
-
 	
 	 //Use for direct application of a Vector 
 	public void ApplyVector(Vector3f vector) { 
@@ -138,9 +138,7 @@ public class Point3f {
 		this.z = z;
 	}
 	
-	
-	  
-	  
+
 	 // Remember point + point  is not defined so we not write a method for it.  
 }
 

@@ -1,3 +1,7 @@
+/*
+	Órla Keating
+	15205679
+*/
 package util;
 
 public class Eagle extends GameObject{
@@ -7,6 +11,16 @@ public class Eagle extends GameObject{
 
 	public Eagle(String textureLocation, int width, int height, Point3f centre, char direction) {
 		super(textureLocation, width, height, centre, direction);
+		if(direction == 'l') {
+			attack1 = new Areas(new Point3f(-95,-45,0), 90,20);
+			attack2 = new Areas(new Point3f(-30,45,0), 90,150);
+			weak = new Areas(new Point3f(10,-45,0),90, 190);
+		}
+		else {
+			attack1 = new Areas(new Point3f(95,-45,0), 90,20);
+			attack2 = new Areas(new Point3f(30,45,0), 90,150);
+			weak = new Areas(new Point3f(-10,-45,0),90, 190);
+		}
 	}
 
 	public Boolean eagleAttacked(Hovercat player) {

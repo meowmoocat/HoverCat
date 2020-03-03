@@ -1,3 +1,7 @@
+/*
+	Órla Keating
+	15205679
+*/
 package util;
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -26,12 +30,11 @@ SOFTWARE.
 public class GameObject {
 
 	private Point3f centre;
-//	private Point3f centre = new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled
 	private int width;
 	private int height;
 	private boolean hasTextured;
-	private String textureLocation; 
-	private String blanktexture;
+	private String textureLocation;
+	private String blanktexture = "res/blankSprite.png";
 	private char Direction = 'l';
 	
 	public GameObject() {  
