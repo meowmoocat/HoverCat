@@ -90,7 +90,7 @@ public class MainWindow implements ActionListener {
         try {
             BufferedImage myPicture = ImageIO.read(BackroundToLoad);
             BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
-            BackgroundImageForStartMenu.setBounds(0, 0, width - 20, height - 20);
+            BackgroundImageForStartMenu.setBounds(-5, -17, width, height);
             frame.add(BackgroundImageForStartMenu);
         } catch (IOException e) {
             e.printStackTrace();
@@ -145,7 +145,14 @@ public class MainWindow implements ActionListener {
             //UNIT test to see if framerate matches
             UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, TargetFPS);
         }
-
+        if(gameworld.getGameOver()) {
+            canvas.setGameover(gameworld.getGameOver());
+            canvas.updateview();
+        }
+        else if(gameworld.getGameFinished()) {
+            canvas.setGamefinished(gameworld.getGameFinished());
+            canvas.updateview();
+        }
     }
 
     //Basic Model-View-Controller pattern

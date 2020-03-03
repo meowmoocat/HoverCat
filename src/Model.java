@@ -58,7 +58,7 @@ public class Model {
     public Model() {
         //setup game world
         //Player
-        HoverCat = new Hovercat("res/hovercatA.png", 150, 50, new Point3f(700, 400, 0), 'r');
+        HoverCat = new Hovercat("res/hovercatA.png", 150, 50, new Point3f(400, 400, 0), 'r');
         Dogs.add(new Doggo("res/dog.png", 140, 90, new Point3f(Width - 30, Height - 23, 0), 'l'));
         if (Difficulty == 4) {
             Eagles.add(new Eagle("res/eagleb.png", 210, 180, new Point3f(0, (float) Math.random() * (Height / 2), 0), 'r'));
@@ -112,12 +112,16 @@ public class Model {
                 HovercatPositionToAttack = HoverCat.getCentre();
                 HovercatDirectionToAttack = HovercatPositionToAttack.MinusPoint(temp.getCentre()).Normal();
             }
-            if (temp.getCentre().getX() > HovercatPositionToAttack.getX() && temp.getCentre().getY() > HovercatPositionToAttack.getY())
+            if ((temp.getCentre().getX() > HovercatPositionToAttack.getX() && temp.getDirection() == 'r')
+            || (temp.getCentre().getX() < HovercatPositionToAttack.getX() && temp.getDirection() == 'l'))
                 EagleReachedPoint = true;
 
 // redo this for when cat is above eagle
             if (EagleReachedPoint)
-                temp.getCentre().ApplyVector(new Vector3f(2, 2, 0));
+                if(temp.getDirection() == 'l')
+                    temp.getCentre().ApplyVector(new Vector3f(-2, 2, 0));
+                else
+                    temp.getCentre().ApplyVector(new Vector3f(2, 2, 0));
             else
                 temp.getCentre().ApplyVector(new Vector3f(HovercatDirectionToAttack.getX() * 3, -HovercatDirectionToAttack.getY() * 3, 0));
             EagleKilled = temp.eagleAttacked(getPlayer());
@@ -163,8 +167,7 @@ public class Model {
                 temp.changeDirection('l');
                 temp.setTexture("res/dog.png");
             }
-
-            if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 5) || (temp.getCentre().getX() > Width - 5))) {
+            if (temp.doggoattacked(getPlayer()) && ((temp.getCentre().getX() < 10) || (temp.getCentre().getX() >= Width - 10))) {
                 Dogs.remove(temp);
                 NumDogs--;
             }
@@ -207,14 +210,18 @@ public class Model {
         HoverCat.getCentre().setBoundary(Width - 2, Height);
         if (keyboardController.getInstance().isKeyAPressed()) {
             HoverCat.getCentre().ApplyVector(new Vector3f(-3, 0, 0));
-            HoverCat.changeDirection('l');
-            HoverCat.setTexture("res/hovercatB.png");
+            if (HoverCat.getDirection() != 'l') {
+                HoverCat.changeDirection('l');
+                HoverCat.setTexture("res/hovercatB.png");
+            }
         }
 
         if (keyboardController.getInstance().isKeyDPressed()) {
             HoverCat.getCentre().ApplyVector(new Vector3f(3, 0, 0));
-            HoverCat.changeDirection('r');
-            HoverCat.setTexture("res/hovercatA.png");
+            if (HoverCat.getDirection() != 'r') {
+                HoverCat.changeDirection('r');
+                HoverCat.setTexture("res/hovercatA.png");
+            }
         }
 
         if (keyboardController.getInstance().isKeyWPressed()) {

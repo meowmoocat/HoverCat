@@ -37,6 +37,8 @@ SOFTWARE.
 public class Viewer extends JPanel {
 	private long CurrentAnimationTime = 0;
 	private int FeathersCount = 0;
+	private boolean Gameover = false;
+	private boolean Gamefinished = false;
 
 	Model gameworld = new Model();
 	private File textureToLoad;
@@ -69,55 +71,68 @@ public class Viewer extends JPanel {
 
 	}
 
+	public void setGameover(boolean gameover) {
+		Gameover = gameover;
+	}
+
+	public void setGamefinished(boolean gamefinished) {
+		Gamefinished = gamefinished;
+	}
 
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
 		CurrentAnimationTime++; // runs animation time step 
+		if(Gameover) {
+			drawBackground("res/hovercatdied.png", g);
+		}
+		else if (Gamefinished) {
+			drawBackground("res/endscreen.png", g);
+		}
+		else {
+			//Draw player Game Object
+			int width = (int) gameworld.getPlayer().getWidth();
+			int height = (int) gameworld.getPlayer().getHeight();
+			int x = (int) gameworld.getPlayer().getCentre().getX() - (width / 2);
+			int y = (int) gameworld.getPlayer().getCentre().getY() - (height / 2);
+			String texture = gameworld.getPlayer().getTexture();
 
-		//Draw player Game Object
-		int width = (int) gameworld.getPlayer().getWidth();
-		int height = (int) gameworld.getPlayer().getHeight();
-		int x = (int) gameworld.getPlayer().getCentre().getX() - (width / 2);
-		int y = (int) gameworld.getPlayer().getCentre().getY() - (height / 2);
-		String texture = gameworld.getPlayer().getTexture();
+			//Draw background
+			drawBackground("res/background800.png", g);
 
-		//Draw background 
-		drawBackground(g);
+			//Draw player
+			drawPlayer(x, y, width, height, texture, g);
 
-		//Draw player
-		drawPlayer(x, y, width, height, texture, g);
+			gameworld.getDoggos().forEach((temp) ->
+			{
+				drawDoggo((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+						(int) temp.getHeight(), temp.getTexture(), g);
+			});
+			gameworld.getIntruderCats().forEach((temp) ->
+			{
+				drawPlayer((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+						(int) temp.getHeight(), temp.getTexture(), g);
+			});
 
-		gameworld.getDoggos().forEach((temp) ->
-		{
-			drawDoggo((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-					(int) temp.getHeight(), temp.getTexture(), g);
-		});
-		gameworld.getIntruderCats().forEach((temp) ->
-		{
-			drawPlayer((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-					(int) temp.getHeight(), temp.getTexture(), g);
-		});
+			gameworld.getEagles().forEach((temp) ->
+			{
+				drawEagle((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+						(int) temp.getHeight(), temp.getTexture(), g);
 
-		gameworld.getEagles().forEach((temp) ->
-		{
-			drawEagle((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-					(int) temp.getHeight(), temp.getTexture(), g);
-
-		});
-		gameworld.getFeathers().forEach((temp) ->
-		{
-			if(FeathersCount < 4) {
+			});
+			gameworld.getFeathers().forEach((temp) ->
+			{
+				if (FeathersCount < 4) {
 //			if(CurrentAnimationTime - FeathersCount < 4) {
-				drawFeathers((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
-						(int) temp.getHeight(), "res/feathers.png", g, FeathersCount);
-				FeathersCount++;
-			}
-			else {
-				gameworld.removeFeathers();
-				FeathersCount = 0;
-			}
-		});
+					drawFeathers((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(),
+							(int) temp.getHeight(), "res/feathers.png", g, FeathersCount);
+					FeathersCount++;
+				} else {
+					gameworld.removeFeathers();
+					FeathersCount = 0;
+				}
+			});
+		}
 	}
 
 	private void drawEagle(int x, int y, int width, int height, String texture, Graphics g) {
@@ -162,27 +177,8 @@ public class Viewer extends JPanel {
 		}
 	}
 
-	private void drawEnemies(int x, int y, int width, int height, String texture, Graphics g) {
-		File TextureToLoad = new File(texture);  //should work okay on OSX and Linux but check if you have issues
-		// depending your eclipse install or if your running this without an IDE
-		try {
-			Image myImage = ImageIO.read(TextureToLoad);
-			//The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time 
-			//remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31  
-			int currentPositionInAnimation = ((int) (CurrentAnimationTime % 4) * 32); //slows down animation so every 10
-			// frames we get another frame so every 100ms
-			g.drawImage(myImage, x, y, x + width, y + width, currentPositionInAnimation, 0,
-					currentPositionInAnimation + 31, 32, null);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private void drawBackground(Graphics g) {
-		File TextureToLoad = new File("res/background800.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
+	private void drawBackground(String background, Graphics g) {
+		File TextureToLoad = new File(background);  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
 		try {
 			Image myImage = ImageIO.read(TextureToLoad);
 			g.drawImage(myImage, 0, 0, 1067, 800, 0, 0, 1067, 800, null);

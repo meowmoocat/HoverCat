@@ -5,9 +5,9 @@
 package util;
 
 public class Eagle extends GameObject{
-	Areas attack1 = new Areas(new Point3f(95,-45,0), 90,20);
-	Areas attack2 = new Areas(new Point3f(30,45,0), 90,150);
-	Areas weak = new Areas(new Point3f(-10,-45,0),90, 190);
+	Areas attack1;
+	Areas attack2;
+	Areas weak;
 
 	public Eagle(String textureLocation, int width, int height, Point3f centre, char direction) {
 		super(textureLocation, width, height, centre, direction);
